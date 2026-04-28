@@ -87,16 +87,10 @@ All sensors use **analog output**:
 
 - Always rinse probes with distilled water between measurements.
 - Allow sensors to stabilize before recording values.
-- Temperature can affect readings—consider compensation if high accuracy is required.
+- Temperature can affect readings - consider compensation if high accuracy is required.
 - Store calibration constants securely after tuning.
 
 ---
 
-## Future Improvements
-
-- Add temperature compensation for EC and pH
-- EEPROM storage for calibration values
-- Unified calibration interface
-- Data logging support
 
 
