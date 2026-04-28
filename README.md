@@ -44,7 +44,7 @@ This repository includes working Arduino sketches for calibrating and reading EC
 
   voltage = avg * 5.0 / 1024
 
-- তারপর converts voltage → pH:
+- Then it converts voltage → pH:
 
   pH = 3.5 * voltage + Offset
 
