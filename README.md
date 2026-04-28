@@ -9,7 +9,7 @@ This repository includes working Arduino sketches for calibrating and reading EC
 
 ---
 
-### EC Sensor (`calibration_ec.cpp`)
+### EC Sensor (`ec_calibration.cpp`)
 
 **Pin:** A3  
 **Calibration Solution:** 12.88 mS/cm  
