@@ -1,13 +1,12 @@
 # DFROBOT-Sensor-Calibration-codes
 
-cat << 'EOF' > README.md
-## 📊 Sensor Calibration (Arduino Uno)
+## Sensor Calibration (Arduino Uno)
 
 This repository contains calibration sketches for analog water quality sensors using the Arduino Uno. Each script helps you obtain accurate readings by calibrating the sensor against known reference solutions.
 
 ---
 
-## 🔧 Supported Sensors
+## Supported Sensors
 
 - **Electrical Conductivity (EC) Sensor**  
   Gravity: Lab Grade Analog EC Sensor (K=10)
@@ -20,7 +19,7 @@ This repository contains calibration sketches for analog water quality sensors u
 
 ---
 
-## 📁 Files
+## Files
 
 | File | Description |
 |------|-------------|
@@ -30,7 +29,7 @@ This repository contains calibration sketches for analog water quality sensors u
 
 ---
 
-## ⚙️ Hardware Requirements
+## Hardware Requirements
 
 - Arduino Uno  
 - Analog sensors listed above  
@@ -41,7 +40,7 @@ This repository contains calibration sketches for analog water quality sensors u
 
 ---
 
-## 🔌 Wiring Overview
+## Wiring Overview
 
 All sensors use **analog output**:
 
@@ -55,7 +54,7 @@ All sensors use **analog output**:
 
 ---
 
-## 🚀 How to Use
+## How to Use
 
 1. Connect the sensor to the Arduino Uno.
 2. Open the corresponding .cpp file in the Arduino IDE.
@@ -65,7 +64,7 @@ All sensors use **analog output**:
 
 ---
 
-## 🧪 Calibration Process
+## Calibration Process
 
 ### EC Sensor
 - Place probe in a known conductivity solution.
@@ -84,7 +83,7 @@ All sensors use **analog output**:
 
 ---
 
-## 📝 Notes
+## Notes
 
 - Always rinse probes with distilled water between measurements.
 - Allow sensors to stabilize before recording values.
@@ -93,11 +92,11 @@ All sensors use **analog output**:
 
 ---
 
-## 📌 Future Improvements
+## Future Improvements
 
 - Add temperature compensation for EC and pH
 - EEPROM storage for calibration values
 - Unified calibration interface
 - Data logging support
 
-EOF
+
