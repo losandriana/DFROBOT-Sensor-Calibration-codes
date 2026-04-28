@@ -1,96 +1,113 @@
 # DFROBOT-Sensor-Calibration-codes
 
-## Sensor Calibration (Arduino Uno)
-
-This repository contains calibration sketches for analog water quality sensors using the Arduino Uno. Each script helps you obtain accurate readings by calibrating the sensor against known reference solutions.
 
 ---
 
-## Supported Sensors
+## Calibration Code Overview
 
-- **Electrical Conductivity (EC) Sensor**  
-  Gravity: Lab Grade Analog EC Sensor (K=10)
-
-- **pH Sensor Kit**  
-  DFRobot Gravity Lab Grade Analog pH Sensor
-
-- **Turbidity Sensor**  
-  Gravity Analog Turbidity Sensor for Arduino
+This repository includes working Arduino sketches for calibrating and reading EC, pH, and turbidity sensors. Below is a breakdown of how each implementation works.
 
 ---
 
-## Files
+### EC Sensor (`calibration_ec.cpp`)
 
-| File | Description |
-|------|-------------|
-| calibration_ec.cpp | Calibration routine for EC sensor (K=10) |
-| ph_calibration.cpp | Calibration routine for pH sensor |
-| turbidity_calibration.cpp | Calibration routine for turbidity sensor |
+**Pin:** A3  
+**Calibration Solution:** 12.88 mS/cm  
 
----
+#### How it Works
+- Waits for user input via Serial Monitor before starting calibration
+- Takes 20 analog samples and averages them
+- Computes a calibration factor:
 
-## Hardware Requirements
+  calibrationFactor = 12.88 / rawValue
 
-- Arduino Uno  
-- Analog sensors listed above  
-- Calibration solutions:
-  - EC: standard conductivity solutions (e.g., 12.88 mS/cm)
-  - pH: buffer solutions (e.g., pH 4.00, 7.00, 10.00)
-  - Turbidity: known NTU reference samples or clear/distilled water
+- Uses this factor to convert raw ADC readings into conductivity (mS/cm)
 
----
+#### Output Example
+- Raw sensor value
+- Calculated conductivity (mS/cm)
 
-## Wiring Overview
-
-All sensors use **analog output**:
-
-| Sensor | Arduino Pin |
-|--------|------------|
-| EC Sensor | A0 |
-| pH Sensor | A1 |
-| Turbidity Sensor | A2 |
-
-> ⚠️ Ensure proper power supply (typically 5V) and common GND.
+#### Notes
+- If raw value = 0, calibration is skipped (division safety)
+- Assumes linear relationship between ADC value and conductivity
 
 ---
 
-## How to Use
+### pH Sensor (`ph_calibration.cpp`)
 
-1. Connect the sensor to the Arduino Uno.
-2. Open the corresponding .cpp file in the Arduino IDE.
-3. Upload the sketch to your board.
-4. Open the Serial Monitor (baud rate defined in code).
-5. Follow on-screen instructions for calibration.
+**Pin:** A2  
 
----
+#### How it Works
+- Collects 40 samples continuously
+- Applies a filtering function (`avergearray`) that removes min/max outliers
+- Converts ADC → voltage:
 
-## Calibration Process
+  voltage = avg * 5.0 / 1024
 
-### EC Sensor
-- Place probe in a known conductivity solution.
-- Wait for readings to stabilize.
-- Adjust calibration constant in code until measured value matches reference.
+- তারপর converts voltage → pH:
 
-### pH Sensor
-- Use at least two-point calibration (pH 7 and pH 4 or 10).
-- Record voltage readings at each buffer.
-- Update slope and offset values in the code.
+  pH = 3.5 * voltage + Offset
 
-### Turbidity Sensor
-- Measure voltage in clear water (baseline).
-- Compare with known NTU samples if available.
-- Fit calibration curve (linear or polynomial depending on accuracy needs).
+#### Key Parameters
+- `Offset = 2.65` → calibration constant (adjust this!)
+- Sampling interval: 20 ms
+- Print interval: 800 ms
 
----
+#### Output Example
+- Voltage (V)
+- pH value
 
-## Notes
-
-- Always rinse probes with distilled water between measurements.
-- Allow sensors to stabilize before recording values.
-- Temperature can affect readings - consider compensation if high accuracy is required.
-- Store calibration constants securely after tuning.
+#### Notes
+- Uses basic linear approximation (not full 2-point calibration)
+- For better accuracy:
+  - Calibrate using pH 4, 7, 10 buffers
+  - Adjust slope (3.5) and offset accordingly
 
 ---
 
+### Turbidity Sensor (`turbidity_calibration.cpp`)
 
+**Pin:** A1  
+
+#### How it Works
+- Reads raw analog value from sensor
+- Converts to voltage:
+
+  voltage = sensorValue * (5.0 / 1024.0)
+
+- Outputs:
+  - Raw ADC value
+  - Voltage
+
+#### Output Example
+Raw ADC: 640 | Voltage: 3.12
+
+#### Notes
+- No direct NTU conversion implemented
+- You must create your own calibration curve:
+  - Measure clear water (low NTU)
+  - Measure known turbidity samples
+  - Fit equation (linear or polynomial)
+
+---
+
+## ⚠️ Important Observations
+
+- The sketches are **independent** and should be uploaded **one at a time**
+- There are **multiple `setup()` and `loop()` functions**, so combining them directly will cause errors
+- All sensors assume:
+  - 5V reference
+  - 10-bit ADC (0–1023)
+
+---
+
+## Suggested Improvements
+
+- Store calibration factors in EEPROM
+- Add temperature compensation (especially for EC)
+- Implement multi-point calibration for pH
+- Convert turbidity voltage → NTU using regression
+- Merge into a single modular sketch
+
+---
 
